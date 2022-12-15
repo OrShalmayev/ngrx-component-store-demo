@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {EAppRoutes} from "./models/routes.models";
 import {APP_ROUTES} from "./data/routes.data";
 
 @Component({

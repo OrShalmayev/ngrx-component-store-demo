@@ -4,7 +4,7 @@ export const enum LoadingState {
     LOADED = "LOADED",
 }
 
-export type CallState = LoadingState;
+export type CallState = LoadingState | ErrorState;
 
 export interface ErrorState {
     errorMsg: string;

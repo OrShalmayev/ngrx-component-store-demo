@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {delay, Observable, of, throwError} from "rxjs";
 import {Car} from "../models/car.model";
+import {carData, FAKE_DELAY} from "../data/car.data";
 
 @Injectable({
     providedIn: 'root'
@@ -29,10 +30,10 @@ export class ParkingLotService {
     }
 
     private getCarByPlate(plate: string): Car {
-        const car = data.find((item: Car) => item.plate === plate)
+        const car = carData.find((item: Car) => item.plate === plate)
 
         if (car) {
-            return car
+            return car;
         }
 
         throw `The car with plate ${plate} is not registered`

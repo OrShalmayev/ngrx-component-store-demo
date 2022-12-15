@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import {LetModule} from "@ngrx/component";
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
     imports: [
         BrowserModule,
         AppRoutingModule,
+        LetModule,
         StoreModule.forRoot({}, {}),
         EffectsModule.forRoot([]),
     ],

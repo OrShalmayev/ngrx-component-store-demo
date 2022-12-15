@@ -1,4 +1,6 @@
-const data: Car[] = [
+import {Car} from "../models/car.model";
+
+export const carData: Car[] = [
     {
         plate: '2FMDK3',
         brand: 'Volvo',
@@ -25,4 +27,4 @@ const data: Car[] = [
     },
 ]
 
-const FAKE_DELAY = 600
+export const FAKE_DELAY = 600

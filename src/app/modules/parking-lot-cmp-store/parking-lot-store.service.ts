@@ -22,7 +22,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
     private readonly loading$: Observable<boolean> = this.select(
         state => state.callState === LoadingState.LOADING
     );
-    private readonly error$: Observable<string> = this.select(state =>
+    private readonly error$: Observable<unknown> = this.select(state =>
         getError(state.callState)
     );
 

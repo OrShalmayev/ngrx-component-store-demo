@@ -1,4 +1,4 @@
-import {EAppRoutes} from "./routes.models";
+import {EAppRoutes} from "../models/routes.model";
 
 export const APP_ROUTES = [
     {
