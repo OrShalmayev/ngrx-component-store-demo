@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ParkingLotComponent} from './parking-lot/parking-lot.component';
+import {ParkingLotComponent} from './parking-lot.component';
 import {RouterModule} from "@angular/router";
 
 
