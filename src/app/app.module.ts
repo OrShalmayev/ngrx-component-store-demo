@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {LetModule} from "@ngrx/component";
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
         AppRoutingModule,
         StoreModule.forRoot({}, {}),
         EffectsModule.forRoot([]),
-        LetModule
     ],
     providers: [],
     bootstrap: [AppComponent]

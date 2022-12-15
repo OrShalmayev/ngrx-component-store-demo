@@ -7,14 +7,8 @@
     />
     <span>Welcome</span>
     <div class="spacer"></div>
-    <a>
-        CMP Store
-    </a>
-    <a>
-        CMP With Service
-    </a>
-    <a>
-        CMP
+    <a *ngFor="let link of links" [routerLink]="link.link">
+        {{link.textContent}}
     </a>
 </div>
 
@@ -58,18 +52,18 @@
     <p>Here are some links to help you get started:</p>
     <router-outlet></router-outlet>
 
-<!--    <div class="card-container">-->
-<!--&lt;!&ndash;        <a class="card" target="_blank" rel="noopener" href="https://angular.io/tutorial">&ndash;&gt;-->
-<!--&lt;!&ndash;            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">&ndash;&gt;-->
-<!--&lt;!&ndash;                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>&ndash;&gt;-->
-<!--&lt;!&ndash;            </svg>&ndash;&gt;-->
-<!--&lt;!&ndash;            <span>Learn Angular</span>&ndash;&gt;-->
-<!--&lt;!&ndash;            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">&ndash;&gt;-->
-<!--&lt;!&ndash;                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>&ndash;&gt;-->
-<!--&lt;!&ndash;            </svg>&ndash;&gt;-->
-<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+    <!--    <div class="card-container">-->
+    <!--&lt;!&ndash;        <a class="card" target="_blank" rel="noopener" href="https://angular.io/tutorial">&ndash;&gt;-->
+    <!--&lt;!&ndash;            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </svg>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <span>Learn Angular</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </svg>&ndash;&gt;-->
+    <!--&lt;!&ndash;        </a>&ndash;&gt;-->
 
-<!--    </div>-->
+    <!--    </div>-->
 
 </div>
 
