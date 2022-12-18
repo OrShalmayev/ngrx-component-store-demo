@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ComponentStore, tapResponse} from "@ngrx/component-store";
-import {ParkingState} from "./models/parking-state";
+import {ParkingState, viewModelType} from "./models/parking-state";
 import {ParkingLotService} from "../../services/parking-lot.service";
 import {LoadingState} from "../../models/state.models";
 import {catchError, concatMap} from "rxjs/operators";
@@ -19,7 +19,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
 
     // SELECTORS
     private readonly cars$: Observable<Car[]> = this.select(state => state.cars);
-    private readonly loading$: Observable<boolean> = this.select(
+    readonly loading$: Observable<boolean> = this.select(
         state => state.callState === LoadingState.LOADING
     );
     private readonly error$: Observable<unknown> = this.select(state =>
@@ -28,7 +28,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
 
 
     // ViewModel for the component
-    readonly vm$ = this.select(
+    readonly vm$: Observable<{ cars: Car[]; loading: boolean; error: unknown; }> = this.select(
         this.cars$,
         this.loading$,
         this.error$,
@@ -66,7 +66,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
     readonly updateCars = this.updater((state: ParkingState, car: Car) => {
         return {
             ...state,
-            error: "",
+            callState: LoadingState.LOADED,
             cars: [...state.cars, car]
         };
     });

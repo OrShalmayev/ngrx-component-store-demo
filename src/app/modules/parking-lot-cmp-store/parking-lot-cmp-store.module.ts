@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ParkingLotComponent} from './parking-lot.component';
 import {RouterModule} from "@angular/router";
-import {LetModule} from "@ngrx/component";
+import {ReactiveComponentModule} from "@ngrx/component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -11,12 +12,14 @@ import {LetModule} from "@ngrx/component";
     ],
     imports: [
         CommonModule,
+        ReactiveComponentModule,
         RouterModule.forChild([
             {
                 path: '',
                 component: ParkingLotComponent
             }
         ]),
+        ReactiveFormsModule,
     ]
 })
 export class ParkingLotCmpStoreModule {
