@@ -5,7 +5,6 @@ import {ParkingLotStoreService} from "../parking-lot-store.service";
     selector: 'app-car-list',
     template: `
         <ng-container *ngIf="cars$|async as cars">
-
             <table *ngIf="cars.length; else noCarsTemplate">
                 <tr>
                     <th>Plate</th>
@@ -14,7 +13,7 @@ import {ParkingLotStoreService} from "../parking-lot-store.service";
                     <th>Color</th>
                 </tr>
                 <ng-template ngFor let-car [ngForOf]="cars" let-i="index">
-                    <tr>
+                    <tr *ngFor="let car of cars; trackBy: trackByIndex">
                         <td>{{car.plate}}</td>
                         <td>{{car.brand}}</td>
                         <td>{{car.model}}</td>
@@ -33,6 +32,7 @@ import {ParkingLotStoreService} from "../parking-lot-store.service";
 })
 export class CarListComponent {
     cars$ = this.store.cars$;
+    trackByIndex = (index:number) => index
 
     constructor(private store: ParkingLotStoreService) {
     }
