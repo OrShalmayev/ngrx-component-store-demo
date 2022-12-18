@@ -4,11 +4,13 @@ import {ParkingLotComponent} from './parking-lot.component';
 import {RouterModule} from "@angular/router";
 import {ReactiveComponentModule} from "@ngrx/component";
 import {ReactiveFormsModule} from "@angular/forms";
+import { CarListComponent } from './cat-list/car-list.component';
 
 
 @NgModule({
     declarations: [
-        ParkingLotComponent
+        ParkingLotComponent,
+        CarListComponent
     ],
     imports: [
         CommonModule,

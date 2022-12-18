@@ -18,7 +18,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
     }
 
     // SELECTORS
-    private readonly cars$: Observable<Car[]> = this.select(state => state.cars);
+    readonly cars$: Observable<Car[]> = this.select(state => state.cars);
     readonly loading$: Observable<boolean> = this.select(
         state => state.callState === LoadingState.LOADING
     );

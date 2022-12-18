@@ -53,7 +53,7 @@ import {switchMap} from "rxjs/operators";
                 </div>
             </div>
 
-            <!--            <app-car-list [cars]="vm.cars"></app-car-list>-->
+            <app-car-list></app-car-list>
         </ng-container>
     `,
     styles: [`
