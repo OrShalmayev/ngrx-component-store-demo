@@ -84,8 +84,6 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
                         },
                         (e: string) => this.updateError(e)
                     ),
-
-                    catchError(() => EMPTY)
                 );
             })
         );
