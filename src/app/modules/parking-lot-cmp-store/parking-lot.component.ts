@@ -17,10 +17,6 @@ import {Car} from "../../models/car.model";
 @Component({
     selector: 'app-parking-lot',
     template: `
-        <header>
-            <h1>Parking Lot Control</h1>
-        </header>
-
         <ng-container *ngIf="vm$ | async as vm">
             <div class="messages">
                 <p class="error" *ngIf="vm.error">{{vm.error}}</p>
@@ -57,29 +53,24 @@ import {Car} from "../../models/car.model";
                 </div>
             </div>
 
-            <app-car-list></app-car-list>
+            <app-car-list class="box"></app-car-list>
 
             <div class="box">
-                <pre>
-                    {{vm | json}}
-                </pre>
+                <div class="terminal">
+                    <pre>
+                        {{vm | json}}
+                    </pre>
+                </div>
             </div>
         </ng-container>
     `,
-    styles: [`
-        :host {
-            width: 80%;
-            padding: 2rem;
-            background-color: #fff;
-        }
-    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ParkingLotStoreService]
 })
 export class ParkingLotComponent implements AfterViewInit, OnDestroy {
-    destroyed$: Subject<void> = new Subject<void>();
-    vm$ = this.store.vm$
-    carPlateControl = new FormControl('', [Validators.required])
+    readonly destroyed$: Subject<void> = new Subject<void>();
+    readonly vm$ = this.store.vm$
+    readonly carPlateControl = new FormControl('', [Validators.required])
     @ViewChild('addCarButton') addCarButton!: ElementRef;
 
     constructor(private store: ParkingLotStoreService) {
@@ -104,7 +95,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
 
     addPlate($event: Event) {
         const target = $event.target as HTMLButtonElement
-
+        this.store.setLoaded();
         if (target.nodeName === 'BUTTON') {
             this.carPlateControl.setValue(target.innerHTML)
         }

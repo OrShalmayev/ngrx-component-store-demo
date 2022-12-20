@@ -7,18 +7,26 @@ import {Car} from "../../../models/car.model";
     template: `
         <ng-container *ngIf="cars$|async as cars">
             <table *ngIf="cars.length; else noCarsTemplate">
+                <thead>
                 <tr>
-                    <th>Plate</th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Color</th>
+                    <th class="first">Plate</th>
+                    <th class="second">Brand</th>
+                    <th class="third">Model</th>
+                    <th class="fourth">Color</th>
+                    <th class="fifth">Actions</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr *ngFor="let car of cars; trackBy: trackByPlate">
-                    <td>{{car.plate}}</td>
-                    <td>{{car.brand}}</td>
-                    <td>{{car.model}}</td>
-                    <td>{{car.color}}</td>
+                    <td class="first">{{car.plate}}</td>
+                    <td class="second">{{car.brand}}</td>
+                    <td class="third">{{car.model}}</td>
+                    <td class="forth">{{car.color}}</td>
+                    <td class="fifth">
+                        <button>Delete</button>
+                    </td>
                 </tr>
+                </tbody>
             </table>
 
             <ng-template #noCarsTemplate>
@@ -30,8 +38,8 @@ import {Car} from "../../../models/car.model";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarListComponent {
-    cars$ = this.store.cars$;
-    trackByPlate = (index:number, el:Car) => el.plate
+    readonly cars$ = this.store.cars$;
+    readonly trackByPlate = (index: number, el: Car) => el.plate
 
     constructor(private store: ParkingLotStoreService) {
     }
