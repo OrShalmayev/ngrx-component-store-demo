@@ -93,7 +93,7 @@ export class ParkingLotStore extends ComponentStore<ParkingState> {
         )
     );
 
-    readonly addCarToParkingLotEffect = this.effect((plate$: Observable<string>) =>
+    readonly addCarEffect = this.effect((plate$: Observable<string>) =>
         plate$.pipe(
             concatMap((plate: string) => {
                 this.setLoading();
@@ -126,7 +126,4 @@ export class ParkingLotStore extends ComponentStore<ParkingState> {
         )
     );
     // endregion EFFECTS
-
-    // region UTILS
-    // endregion UTILS
 }

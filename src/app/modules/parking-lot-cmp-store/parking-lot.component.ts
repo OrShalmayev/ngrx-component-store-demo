@@ -4,14 +4,11 @@ import {
     Component,
     ElementRef,
     OnDestroy,
-    OnInit,
     ViewChild
 } from '@angular/core';
-import {FormControl, Validator, Validators} from "@angular/forms";
-import {filter, fromEvent, Subject, switchMapTo, take, takeUntil, tap, throttleTime, withLatestFrom} from "rxjs";
-import {concatLatestFrom} from "@ngrx/effects";
+import {FormControl, Validators} from "@angular/forms";
+import {filter, fromEvent, Subject, take, takeUntil, tap, throttleTime} from "rxjs";
 import {switchMap} from "rxjs/operators";
-import {Car} from "../../models/car.model";
 import {ParkingLotStore} from "./parking-lot.store";
 
 @Component({
@@ -87,7 +84,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
             filter(loading => loading === false),
             tap(() => {
                 const plate = this.carPlateControl.getRawValue() as string;
-                this.store.addCarToParkingLotEffect(plate)
+                this.store.addCarEffect(plate)
                 this.carPlateControl.reset()
             }),
             takeUntil(this.destroyed$)

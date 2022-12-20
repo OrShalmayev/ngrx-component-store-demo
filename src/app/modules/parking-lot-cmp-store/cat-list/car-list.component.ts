@@ -33,7 +33,6 @@ import {ParkingLotStore} from "../parking-lot.store";
             <p>No cars in the parking lot</p>
         </ng-template>
     `,
-    styles: [],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarListComponent {
