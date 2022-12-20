@@ -45,7 +45,7 @@ import {debug} from "../../shared/utils/rxjs.utils";
 
                 <div class="shortcuts">
                     <h5>Shortcuts</h5>
-                    <p (click)="addPlate($event)" class="examples">
+                    <p (click)="onAddPlate($event)" class="examples">
                         <button *ngFor="let plate of vm.commonPlates; trackBy: trackByIndex">{{plate}}</button>
                     </p>
                 </div>
@@ -65,22 +65,21 @@ import {debug} from "../../shared/utils/rxjs.utils";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ParkingLotStore]
 })
-export class ParkingLotComponent implements OnInit,AfterViewInit, OnDestroy {
+export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     readonly destroyed$: Subject<void> = new Subject<void>();
     readonly vm$ = this.store.vm$
     readonly carPlateControl = new FormControl('', [Validators.required])
     @ViewChild('addCarButton') addCarButton!: ElementRef;
 
     constructor(private store: ParkingLotStore) {
-    }
-    ngOnInit(): void {
         this.debuggers()
     }
+
     ngAfterViewInit(): void {
-        this.handleAddCar()
+        this.onAddCar()
     }
 
-    private handleAddCar() {
+    private onAddCar() {
         fromEvent(this.addCarButton.nativeElement, 'click').pipe(
             switchMap(() => this.store.loading$.pipe(take(1))),
             filter(loading => loading === false),
@@ -94,7 +93,7 @@ export class ParkingLotComponent implements OnInit,AfterViewInit, OnDestroy {
         ).subscribe()
     }
 
-    addPlate($event: Event) {
+    onAddPlate($event: Event) {
         const target = $event.target as HTMLButtonElement
         this.store.setLoaded();
         if (target.nodeName === 'BUTTON') {
@@ -104,15 +103,15 @@ export class ParkingLotComponent implements OnInit,AfterViewInit, OnDestroy {
 
     trackByIndex = (index: number) => index;
 
-    ngOnDestroy(): void {
-        this.destroyed$.next()
-        this.destroyed$.complete()
-    }
-
     private debuggers() {
         this.store.vm$.pipe(debug('viewModel changed')).subscribe()
         this.store.loading$.pipe(debug('loading changed')).subscribe()
         this.store.commonPlates$.pipe(debug('commonPlates changed')).subscribe()
         this.store.cars$.pipe(debug('cars changed')).subscribe()
+    }
+
+    ngOnDestroy(): void {
+        this.destroyed$.next()
+        this.destroyed$.complete()
     }
 }
