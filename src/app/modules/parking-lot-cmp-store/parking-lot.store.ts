@@ -3,9 +3,9 @@ import {ComponentStore, tapResponse} from "@ngrx/component-store";
 import {ParkingState} from "./models/parking-state";
 import {ParkingLotService} from "../../services/parking-lot.service";
 import {LoadingState} from "../../models/state.models";
-import {catchError, concatMap, map, switchMap, tap} from "rxjs/operators";
+import {concatMap, switchMap, tap} from "rxjs/operators";
 import {Car} from "../../models/car.model";
-import {EMPTY, Observable, of} from "rxjs";
+import {Observable, of} from "rxjs";
 import {getError} from "../../shared/utils/state.utils";
 
 @Injectable()
@@ -75,28 +75,7 @@ export class ParkingLotStore extends ComponentStore<ParkingState> {
             cars: [...state.cars, car]
         };
     });
-    readonly deleteCar = this.updater((state, car: Car) => {
-        let carIsParked:boolean = false;
 
-        const cars = state.cars.filter(c => {
-            if(c.plate === car.plate) {
-                carIsParked = true;
-            }
-            return c.plate !== car.plate
-        });
-
-        if (carIsParked===false) {
-            return {
-                ...state,
-                callState: {errorMsg: 'Car is not in the parking lot'}
-            }
-        }
-
-        return {
-            ...state,
-            cars
-        }
-    })
     // endregion UPDATERS
 
     // region EFFECTS
@@ -128,6 +107,22 @@ export class ParkingLotStore extends ComponentStore<ParkingState> {
                 )
             }),
 
+        )
+    );
+    readonly deleteCarEffect = this.effect((plate$: Observable<string>) =>
+        plate$.pipe(
+            concatMap((plate)=> {
+                this.setLoading();
+                return this.parkingLotService.delete(plate).pipe(
+                    tapResponse(
+                        (cars:Car[]) => {
+                            this.patchState({cars});
+                            this.setLoaded();
+                        },
+                        (err: string) => this.updateError(err)
+                    )
+                )
+            })
         )
     );
     // endregion EFFECTS

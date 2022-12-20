@@ -489,3 +489,44 @@ tbody tr:hover {
     0%, 2%, 100% { opacity: 0; }
     3% { opacity: 1; }
 }
+
+input {
+    padding: 0.5rem;
+    width: 10rem;
+    font-size: 13px;
+    border-radius: 25px;
+    border: 1px solid #f1f1f1;
+}
+.btn {
+    $this: &;
+    --bgc: #314AE7;
+    min-width: 7rem;
+    padding: 0.5rem;
+    background-color: var(--bgc);
+    color: #fff;
+    border-radius: 25px;
+    transition: 0.3s ease-in-out background-color;
+    cursor: pointer;
+    border: none;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+    &-1 {
+        --bgc: #314AE7;
+        @extend #{$this};
+        &:hover {
+            background-color: lighten(#314AE7, 5%);
+        }
+    }
+    &-danger {
+        --bgc: #df4759;
+
+        @extend #{$this};
+        min-width: max-content;
+        &:hover {
+            background-color: lighten(#df4759, 5%);
+        }
+    }
+}

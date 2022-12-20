@@ -23,7 +23,7 @@ import {ParkingLotStore} from "../parking-lot.store";
                     <td class="third">{{car.model}}</td>
                     <td class="forth">{{car.color}}</td>
                     <td class="fifth">
-                        <button (click)="store.deleteCar(car)">Delete</button>
+                        <button class="btn-danger" [disabled]="vm.loading" (click)="store.deleteCarEffect(car.plate)">Delete</button>
                     </td>
                 </tr>
                 </tbody>

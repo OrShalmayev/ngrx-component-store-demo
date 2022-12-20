@@ -8,7 +8,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {FormControl, Validator, Validators} from "@angular/forms";
-import {filter, fromEvent, Subject, switchMapTo, take, takeUntil, tap, withLatestFrom} from "rxjs";
+import {filter, fromEvent, Subject, switchMapTo, take, takeUntil, tap, throttleTime, withLatestFrom} from "rxjs";
 import {concatLatestFrom} from "@ngrx/effects";
 import {switchMap} from "rxjs/operators";
 import {Car} from "../../models/car.model";
@@ -27,11 +27,11 @@ import {ParkingLotStore} from "./parking-lot.store";
                     <input
                         type="text"
                         [formControl]="carPlateControl"
-                        [placeholder]="vm.loading ? 'Please wait...' : 'Ex: ' + vm.commonPlates"
+                        [placeholder]="vm.loading ? 'Please wait...' : 'Enter plate'"
                         [disabled]="vm.loading"
                     />
                     <button
-                        class=""
+                        class="btn-1"
                         #addCarButton
                         type="button"
                         [disabled]="vm.loading || carPlateControl.valid===false"
@@ -82,6 +82,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
 
     private handleAddCar() {
         fromEvent(this.addCarButton.nativeElement, 'click').pipe(
+            throttleTime(300),
             switchMap(() => this.store.loading$.pipe(take(1))),
             filter(loading => loading === false),
             tap(() => {

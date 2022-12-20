@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {delay, Observable, of, throwError} from "rxjs";
+import {delay, Observable, of, tap, throwError} from "rxjs";
 import {Car} from "../models/car.model";
 import {carData, FAKE_DELAY, INIT_FAKE_DELAY, parkedCarData} from "../data/car.data";
 
@@ -12,7 +12,12 @@ export class ParkingLotService {
     constructor() {
     }
     getParkedCars() {
-        return of(parkedCarData).pipe(delay(INIT_FAKE_DELAY))
+        return of(parkedCarData).pipe(
+            delay(INIT_FAKE_DELAY),
+            tap(()=>{
+                this.cars = parkedCarData
+            })
+        )
     }
 
     add(plate: string): Observable<Car> {
@@ -32,7 +37,7 @@ export class ParkingLotService {
         }
     }
 
-    delete(plate: string) {
+    delete(plate: string): Observable<Car[]> {
         try {
             const existingCar = this.getCarByPlate(plate);
 
@@ -45,7 +50,7 @@ export class ParkingLotService {
     }
 
     private getCarByPlate(plate: string): Car {
-        const car = carData.find((item: Car) => item.plate === plate)
+        const car = [...carData, ...parkedCarData].find((item: Car) => item.plate === plate)
 
         if (car) {
             return car;
