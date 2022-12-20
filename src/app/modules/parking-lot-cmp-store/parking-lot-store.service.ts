@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ComponentStore, tapResponse} from "@ngrx/component-store";
-import {ParkingState, viewModelType} from "./models/parking-state";
+import {ParkingState} from "./models/parking-state";
 import {ParkingLotService} from "../../services/parking-lot.service";
 import {LoadingState} from "../../models/state.models";
 import {catchError, concatMap} from "rxjs/operators";
@@ -13,29 +13,33 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
     constructor(private parkingLotService: ParkingLotService) {
         super({
             cars: [],
-            callState: LoadingState.INIT
+            callState: LoadingState.INIT,
+            commonPlates: ['2FMDK3', '1GYS4C','1GKS1E','1G6AS5']
         });
     }
 
     // SELECTORS
-    readonly cars$: Observable<Car[]> = this.select(state => state.cars);
     readonly loading$: Observable<boolean> = this.select(
         state => state.callState === LoadingState.LOADING
     );
     private readonly error$: Observable<unknown> = this.select(state =>
         getError(state.callState)
     );
+    readonly cars$: Observable<Car[]> = this.select(state => state.cars);
+    readonly commonPlates$: Observable<string[]> = this.select(state => state.commonPlates);
 
 
     // ViewModel for the component
-    readonly vm$: Observable<{ cars: Car[]; loading: boolean; error: unknown; }> = this.select(
-        this.cars$,
+    readonly vm$: Observable<{ cars: Car[]; loading: boolean; error: unknown; commonPlates: string[] }> = this.select(
         this.loading$,
         this.error$,
-        (cars, loading, error) => ({
-            cars,
+        this.cars$,
+        this.commonPlates$,
+        (loading, error,cars,commonPlates) => ({
             loading,
-            error
+            error,
+            cars,
+            commonPlates
         })
     );
 

@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+.box {
+    background-color: #fff;
+    border: 1px solid #f1f1f1;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

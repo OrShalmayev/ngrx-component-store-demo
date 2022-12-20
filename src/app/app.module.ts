@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
         AppRoutingModule,
         StoreModule.forRoot({}, {}),
         EffectsModule.forRoot([]),
+        NgbModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

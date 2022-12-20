@@ -6,5 +6,5 @@ import {Observable} from "rxjs";
 export interface ParkingState {
     cars: Car[]; // render the table with cars
     callState: CallState;
+    commonPlates: string[]
 }
-export type viewModelType = Observable<ParkingState & { loading: boolean, error: unknown }>;
