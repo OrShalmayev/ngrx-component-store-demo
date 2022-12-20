@@ -66,11 +66,11 @@ import {debug} from "../../shared/utils/rxjs.utils";
     providers: [ParkingLotStore]
 })
 export class ParkingLotComponent implements AfterViewInit, OnDestroy {
-    readonly destroyed$: Subject<void> = new Subject<void>();
+    private readonly destroyed$: Subject<void> = new Subject<void>();
     readonly vm$ = this.store.vm$
     readonly carPlateControl = new FormControl('', [Validators.required])
     @ViewChild('addCarButton') addCarButton!: ElementRef;
-    addCarBtnClicked$ = defer(() => fromEvent(this.addCarButton.nativeElement, 'click'))
+    private readonly addCarBtnClicked$ = defer(() => fromEvent(this.addCarButton.nativeElement, 'click'))
 
     constructor(private store: ParkingLotStore) {
         this.debuggers()
@@ -82,8 +82,6 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
 
     private onAddCar() {
         this.addCarBtnClicked$.pipe(
-            switchMap(() => this.store.loading$.pipe(take(1))),
-            filter(loading => loading === false),
             tap(() => {
                 const plate = this.carPlateControl.getRawValue() as string;
                 this.store.addCarEffect(plate)
