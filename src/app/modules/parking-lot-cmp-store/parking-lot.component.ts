@@ -82,7 +82,6 @@ export class ParkingLotComponent implements OnInit,AfterViewInit, OnDestroy {
 
     private handleAddCar() {
         fromEvent(this.addCarButton.nativeElement, 'click').pipe(
-            throttleTime(300),
             switchMap(() => this.store.loading$.pipe(take(1))),
             filter(loading => loading === false),
             tap(() => {
