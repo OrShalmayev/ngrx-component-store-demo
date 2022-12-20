@@ -7,7 +7,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
-import {filter, fromEvent, pluck, Subject, take, takeUntil, tap, throttleTime} from "rxjs";
+import {defer, filter, fromEvent, pluck, Subject, take, takeUntil, tap, throttleTime} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {ParkingLotStore} from "./parking-lot.store";
 import {debug} from "../../shared/utils/rxjs.utils";
@@ -70,6 +70,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     readonly vm$ = this.store.vm$
     readonly carPlateControl = new FormControl('', [Validators.required])
     @ViewChild('addCarButton') addCarButton!: ElementRef;
+    addCarBtnClicked$ = defer(() => fromEvent(this.addCarButton.nativeElement, 'click'))
 
     constructor(private store: ParkingLotStore) {
         this.debuggers()
@@ -80,7 +81,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     }
 
     private onAddCar() {
-        fromEvent(this.addCarButton.nativeElement, 'click').pipe(
+        this.addCarBtnClicked$.pipe(
             switchMap(() => this.store.loading$.pipe(take(1))),
             filter(loading => loading === false),
             tap(() => {
