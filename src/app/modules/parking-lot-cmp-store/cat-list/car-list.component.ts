@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ParkingLotStoreService} from "../parking-lot-store.service";
 import {Car} from "../../../models/car.model";
+import {ParkingLotStore} from "../parking-lot.store";
 
 @Component({
     selector: 'app-car-list',
     template: `
-        <ng-container *ngIf="cars$|async as cars">
-            <table *ngIf="cars.length; else noCarsTemplate">
+        <ng-container *ngIf="vm$|async as vm">
+            <table *ngIf="vm.cars.length; else noCarsTemplate">
                 <thead>
                 <tr>
                     <th class="first">Plate</th>
@@ -17,30 +17,29 @@ import {Car} from "../../../models/car.model";
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let car of cars; trackBy: trackByPlate">
+                <tr *ngFor="let car of vm.cars; trackBy: trackByPlate">
                     <td class="first">{{car.plate}}</td>
                     <td class="second">{{car.brand}}</td>
                     <td class="third">{{car.model}}</td>
                     <td class="forth">{{car.color}}</td>
                     <td class="fifth">
-                        <button>Delete</button>
+                        <button (click)="store.deleteCar(car)">Delete</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-
-            <ng-template #noCarsTemplate>
-                <p>No cars in the parking lot</p>
-            </ng-template>
         </ng-container>
+        <ng-template #noCarsTemplate>
+            <p>No cars in the parking lot</p>
+        </ng-template>
     `,
     styles: [],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarListComponent {
-    readonly cars$ = this.store.cars$;
+    readonly vm$ = this.store.vm$;
     readonly trackByPlate = (index: number, el: Car) => el.plate
 
-    constructor(private store: ParkingLotStoreService) {
+    constructor(public store: ParkingLotStore) {
     }
 }

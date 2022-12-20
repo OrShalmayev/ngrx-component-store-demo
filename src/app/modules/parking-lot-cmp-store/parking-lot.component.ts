@@ -7,12 +7,12 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import {ParkingLotStoreService} from "./parking-lot-store.service";
 import {FormControl, Validator, Validators} from "@angular/forms";
 import {filter, fromEvent, Subject, switchMapTo, take, takeUntil, tap, withLatestFrom} from "rxjs";
 import {concatLatestFrom} from "@ngrx/effects";
 import {switchMap} from "rxjs/operators";
 import {Car} from "../../models/car.model";
+import {ParkingLotStore} from "./parking-lot.store";
 
 @Component({
     selector: 'app-parking-lot',
@@ -65,7 +65,7 @@ import {Car} from "../../models/car.model";
         </ng-container>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [ParkingLotStoreService]
+    providers: [ParkingLotStore]
 })
 export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     readonly destroyed$: Subject<void> = new Subject<void>();
@@ -73,7 +73,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     readonly carPlateControl = new FormControl('', [Validators.required])
     @ViewChild('addCarButton') addCarButton!: ElementRef;
 
-    constructor(private store: ParkingLotStoreService) {
+    constructor(private store: ParkingLotStore) {
     }
 
     ngAfterViewInit(): void {
@@ -86,7 +86,7 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
             filter(loading => loading === false),
             tap(() => {
                 const plate = this.carPlateControl.getRawValue() as string;
-                this.store.addCarToParkingLot(plate)
+                this.store.addCarToParkingLotEffect(plate)
                 this.carPlateControl.reset()
             }),
             takeUntil(this.destroyed$)

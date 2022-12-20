@@ -3,13 +3,13 @@ import {ComponentStore, tapResponse} from "@ngrx/component-store";
 import {ParkingState} from "./models/parking-state";
 import {ParkingLotService} from "../../services/parking-lot.service";
 import {LoadingState} from "../../models/state.models";
-import {catchError, concatMap, switchMap, tap} from "rxjs/operators";
+import {catchError, concatMap, map, switchMap, tap} from "rxjs/operators";
 import {Car} from "../../models/car.model";
 import {EMPTY, Observable, of} from "rxjs";
 import {getError} from "../../shared/utils/state.utils";
 
 @Injectable()
-export class ParkingLotStoreService extends ComponentStore<ParkingState> {
+export class ParkingLotStore extends ComponentStore<ParkingState> {
     constructor(private parkingLotService: ParkingLotService) {
         super({
             cars: [],
@@ -75,10 +75,32 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
             cars: [...state.cars, car]
         };
     });
+    readonly deleteCar = this.updater((state, car: Car) => {
+        let carIsParked:boolean = false;
+
+        const cars = state.cars.filter(c => {
+            if(c.plate === car.plate) {
+                carIsParked = true;
+            }
+            return c.plate !== car.plate
+        });
+
+        if (carIsParked===false) {
+            return {
+                ...state,
+                callState: {errorMsg: 'Car is not in the parking lot'}
+            }
+        }
+
+        return {
+            ...state,
+            cars
+        }
+    })
     // endregion UPDATERS
 
     // region EFFECTS
-    readonly onInit = this.effect(() =>
+    readonly onInitEffect = this.effect(() =>
         of('onInit').pipe(
             tap(() =>{
                 this.setLoading();
@@ -92,7 +114,7 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
         )
     );
 
-    readonly addCarToParkingLot = this.effect((plate$: Observable<string>) =>
+    readonly addCarToParkingLotEffect = this.effect((plate$: Observable<string>) =>
         plate$.pipe(
             concatMap((plate: string) => {
                 this.setLoading();
