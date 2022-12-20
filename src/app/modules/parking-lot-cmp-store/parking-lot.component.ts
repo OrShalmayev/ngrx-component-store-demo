@@ -45,8 +45,8 @@ import {debug} from "../../shared/utils/rxjs.utils";
 
                 <div class="shortcuts">
                     <h5>Shortcuts</h5>
-                    <p (click)="onAddPlate($event)" class="examples">
-                        <button *ngFor="let plate of vm.commonPlates; trackBy: trackByIndex">{{plate}}</button>
+                    <p class="examples">
+                        <button #btn (click)="carPlateControl.setValue(btn.innerHTML)" *ngFor="let plate of vm.commonPlates; trackBy: trackByIndex">{{plate}}</button>
                     </p>
                 </div>
             </div>
@@ -90,14 +90,6 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
             takeUntil(this.destroyed$),
             debug('addCarButton clicked')
         ).subscribe()
-    }
-
-    onAddPlate($event: Event) {
-        const target = $event.target as HTMLButtonElement
-        this.store.setLoaded();
-        if (target.nodeName === 'BUTTON') {
-            this.carPlateControl.setValue(target.innerHTML)
-        }
     }
 
     trackByIndex = (index: number) => index;
