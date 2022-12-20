@@ -3,13 +3,14 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
-    OnDestroy,
+    OnDestroy, OnInit,
     ViewChild
 } from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
-import {filter, fromEvent, Subject, take, takeUntil, tap, throttleTime} from "rxjs";
+import {filter, fromEvent, pluck, Subject, take, takeUntil, tap, throttleTime} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {ParkingLotStore} from "./parking-lot.store";
+import {debug} from "../../shared/utils/rxjs.utils";
 
 @Component({
     selector: 'app-parking-lot',
@@ -64,7 +65,7 @@ import {ParkingLotStore} from "./parking-lot.store";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ParkingLotStore]
 })
-export class ParkingLotComponent implements AfterViewInit, OnDestroy {
+export class ParkingLotComponent implements OnInit,AfterViewInit, OnDestroy {
     readonly destroyed$: Subject<void> = new Subject<void>();
     readonly vm$ = this.store.vm$
     readonly carPlateControl = new FormControl('', [Validators.required])
@@ -72,7 +73,9 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
 
     constructor(private store: ParkingLotStore) {
     }
-
+    ngOnInit(): void {
+        this.debuggers()
+    }
     ngAfterViewInit(): void {
         this.handleAddCar()
     }
@@ -87,7 +90,8 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
                 this.store.addCarEffect(plate)
                 this.carPlateControl.reset()
             }),
-            takeUntil(this.destroyed$)
+            takeUntil(this.destroyed$),
+            debug('addCarButton clicked')
         ).subscribe()
     }
 
@@ -104,5 +108,12 @@ export class ParkingLotComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroyed$.next()
         this.destroyed$.complete()
+    }
+
+    private debuggers() {
+        this.store.vm$.pipe(debug('viewModel changed')).subscribe()
+        this.store.loading$.pipe(debug('loading changed')).subscribe()
+        this.store.commonPlates$.pipe(debug('commonPlates changed')).subscribe()
+        this.store.cars$.pipe(debug('cars changed')).subscribe()
     }
 }

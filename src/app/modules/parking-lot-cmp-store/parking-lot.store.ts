@@ -75,7 +75,6 @@ export class ParkingLotStore extends ComponentStore<ParkingState> {
             cars: [...state.cars, car]
         };
     });
-
     // endregion UPDATERS
 
     // region EFFECTS
