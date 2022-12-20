@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {delay, Observable, of, throwError} from "rxjs";
 import {Car} from "../models/car.model";
-import {carData, FAKE_DELAY} from "../data/car.data";
+import {carData, FAKE_DELAY, INIT_FAKE_DELAY, parkedCarData} from "../data/car.data";
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +10,9 @@ export class ParkingLotService {
     private cars: Car[] = []
 
     constructor() {
+    }
+    getParkedCars() {
+        return of(parkedCarData).pipe(delay(INIT_FAKE_DELAY))
     }
 
     add(plate: string): Observable<Car> {

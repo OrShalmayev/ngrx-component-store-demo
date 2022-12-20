@@ -3,9 +3,9 @@ import {ComponentStore, tapResponse} from "@ngrx/component-store";
 import {ParkingState} from "./models/parking-state";
 import {ParkingLotService} from "../../services/parking-lot.service";
 import {LoadingState} from "../../models/state.models";
-import {catchError, concatMap} from "rxjs/operators";
+import {catchError, concatMap, switchMap, tap} from "rxjs/operators";
 import {Car} from "../../models/car.model";
-import {EMPTY, Observable} from "rxjs";
+import {EMPTY, Observable, of} from "rxjs";
 import {getError} from "../../shared/utils/state.utils";
 
 @Injectable()
@@ -18,11 +18,11 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
         });
     }
 
-    // SELECTORS
+    // region SELECTORS
     readonly loading$: Observable<boolean> = this.select(
         state => state.callState === LoadingState.LOADING
     );
-    private readonly error$: Observable<unknown> = this.select(state =>
+    readonly error$: Observable<unknown> = this.select(state =>
         getError(state.callState)
     );
     readonly cars$: Observable<Car[]> = this.select(state => state.cars);
@@ -42,8 +42,9 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
             commonPlates
         })
     );
+    // endregion SELECTORS
 
-    // UPDATERS (reducer)
+    // region UPDATERS
     readonly updateError = this.updater((state: ParkingState, error: string) => {
         return {
             ...state,
@@ -74,22 +75,41 @@ export class ParkingLotStoreService extends ComponentStore<ParkingState> {
             cars: [...state.cars, car]
         };
     });
+    // endregion UPDATERS
 
-    // EFFECTS
-    readonly addCarToParkingLot = this.effect((plate$: Observable<string>) => {
-        return plate$.pipe(
+    // region EFFECTS
+    readonly onInit = this.effect(() =>
+        of('onInit').pipe(
+            tap(() =>{
+                this.setLoading();
+            }),
+            switchMap(()=> this.parkingLotService.getParkedCars().pipe(
+                tapResponse((parkedCars) => {
+                    this.patchState({cars:parkedCars});
+                    this.setLoaded();
+                }, (err: string) => this.updateError(err))
+            )),
+        )
+    );
+
+    readonly addCarToParkingLot = this.effect((plate$: Observable<string>) =>
+        plate$.pipe(
             concatMap((plate: string) => {
                 this.setLoading();
                 return this.parkingLotService.add(plate).pipe(
                     tapResponse(
-                        car => {
-                            this.setLoaded();
+                        (car) => {
                             this.updateCars(car);
                         },
-                        (e: string) => this.updateError(e)
-                    ),
-                );
-            })
-        );
-    });
+                        (err: string) => this.updateError(err)
+                    )
+                )
+            }),
+
+        )
+    );
+    // endregion EFFECTS
+
+    // region UTILS
+    // endregion UTILS
 }

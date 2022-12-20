@@ -12,6 +12,7 @@ import {FormControl, Validator, Validators} from "@angular/forms";
 import {filter, fromEvent, Subject, switchMapTo, take, takeUntil, tap, withLatestFrom} from "rxjs";
 import {concatLatestFrom} from "@ngrx/effects";
 import {switchMap} from "rxjs/operators";
+import {Car} from "../../models/car.model";
 
 @Component({
     selector: 'app-parking-lot',
@@ -30,7 +31,7 @@ import {switchMap} from "rxjs/operators";
                     <input
                         type="text"
                         [formControl]="carPlateControl"
-                        [placeholder]="vm.loading ? 'Loading...' : 'Ex: ' + vm.commonPlates"
+                        [placeholder]="vm.loading ? 'Please wait...' : 'Ex: ' + vm.commonPlates"
                         [disabled]="vm.loading"
                     />
                     <button
@@ -57,6 +58,12 @@ import {switchMap} from "rxjs/operators";
             </div>
 
             <app-car-list></app-car-list>
+
+            <div class="box">
+                <pre>
+                    {{vm | json}}
+                </pre>
+            </div>
         </ng-container>
     `,
     styles: [`

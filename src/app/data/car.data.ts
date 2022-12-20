@@ -26,5 +26,14 @@ export const carData: Car[] = [
         color: 'Aquamarine',
     },
 ]
+export const parkedCarData: Car[] = [
+    {
+        plate: 'FF3FDC',
+        brand: 'Mercedes',
+        model: 'SLS',
+        color: 'Black',
+    }
+]
 
-export const FAKE_DELAY = 600
+export const INIT_FAKE_DELAY = 1000;
+export const FAKE_DELAY = 600;

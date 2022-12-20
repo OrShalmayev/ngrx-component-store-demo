@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ParkingLotStoreService} from "../parking-lot-store.service";
+import {Car} from "../../../models/car.model";
 
 @Component({
     selector: 'app-car-list',
@@ -12,14 +13,12 @@ import {ParkingLotStoreService} from "../parking-lot-store.service";
                     <th>Model</th>
                     <th>Color</th>
                 </tr>
-                <ng-template ngFor let-car [ngForOf]="cars" let-i="index">
-                    <tr *ngFor="let car of cars; trackBy: trackByIndex">
-                        <td>{{car.plate}}</td>
-                        <td>{{car.brand}}</td>
-                        <td>{{car.model}}</td>
-                        <td>{{car.color}}</td>
-                    </tr>
-                </ng-template>
+                <tr *ngFor="let car of cars; trackBy: trackByPlate">
+                    <td>{{car.plate}}</td>
+                    <td>{{car.brand}}</td>
+                    <td>{{car.model}}</td>
+                    <td>{{car.color}}</td>
+                </tr>
             </table>
 
             <ng-template #noCarsTemplate>
@@ -32,7 +31,7 @@ import {ParkingLotStoreService} from "../parking-lot-store.service";
 })
 export class CarListComponent {
     cars$ = this.store.cars$;
-    trackByIndex = (index:number) => index
+    trackByPlate = (index:number, el:Car) => el.plate
 
     constructor(private store: ParkingLotStoreService) {
     }
