@@ -16,10 +16,13 @@ import {debug} from "../../shared/utils/rxjs.utils";
     selector: 'app-parking-lot',
     template: `
         <ng-container *ngIf="vm$ | async as vm">
+            <!-- region Messages-->
             <div class="messages">
                 <p class="error" *ngIf="vm.error">{{vm.error}}</p>
             </div>
+            <!-- endregion Messages-->
 
+            <!--region Add Car-->
             <div class="box">
                 <div class="add-car">
                     <input
@@ -56,9 +59,13 @@ import {debug} from "../../shared/utils/rxjs.utils";
                     </p>
                 </div>
             </div>
+            <!--endregion Add Car-->
 
+            <!-- region Car List Table -->
             <app-car-list class="box"></app-car-list>
+            <!-- endregion Car List Table -->
 
+            <!-- region Terminal -->
             <div class="box">
                 <div class="terminal">
                     <pre>
@@ -66,6 +73,7 @@ import {debug} from "../../shared/utils/rxjs.utils";
                     </pre>
                 </div>
             </div>
+            <!-- endregion Terminal -->
         </ng-container>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
