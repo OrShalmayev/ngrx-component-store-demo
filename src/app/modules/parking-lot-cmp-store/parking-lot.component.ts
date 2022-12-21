@@ -46,7 +46,13 @@ import {debug} from "../../shared/utils/rxjs.utils";
                 <div class="shortcuts">
                     <h5>Shortcuts</h5>
                     <p class="examples">
-                        <button #btn (click)="carPlateControl.setValue(btn.innerHTML)" *ngFor="let plate of vm.commonPlates; trackBy: trackByIndex">{{plate}}</button>
+                        <button
+                            *ngFor="let plate of vm.commonPlates; trackBy: trackByIndex"
+                            #btn
+                            (click)="carPlateControl.setValue(btn.innerHTML)"
+                        >
+                            {{plate}}
+                        </button>
                     </p>
                 </div>
             </div>
